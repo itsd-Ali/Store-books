@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:36315")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/books")
 //  @CrossOrigin(origins = "*") // للسماح للفرونت اند بالوصول
@@ -38,9 +38,22 @@ public class BookController {
     }
 
 
-    // إضافة كتاب جديد
-    @PostMapping
-    public Book createBook(@RequestBody Book book) {
-        return repository.save(book);
+    // إضافة كتاب
+    @PostMapping("/add")
+    public ResponseEntity<Book> addBook(@RequestBody Book book) {
+        return ResponseEntity.ok(bookRepository.save(book));
     }
+
+    // حذف كتاب
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteBook(@PathVariable Long id) {
+        if (bookRepository.existsById(id)) {
+            bookRepository.deleteById(id);
+            return ResponseEntity.ok("Book deleted");
+        } else {
+            return ResponseEntity.status(404).body("Book not found");
+        }
+    }
+
+
 }
