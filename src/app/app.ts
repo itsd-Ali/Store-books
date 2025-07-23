@@ -16,7 +16,7 @@ import { HeaderComponent } from "./header.component/header.component";
 })
 export class App {
 
-searchQueryFromHeader: string = '';
+/* searchQueryFromHeader: string = '';
 
 onSearchChanged($event: string) {
 
@@ -27,6 +27,6 @@ throw new Error('Method not implemented.');
 
 onSearchQueryChanged(query: string) {
   this.searchQueryFromHeader = query;
-}
+} */
 
 }

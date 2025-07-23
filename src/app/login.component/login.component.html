@@ -1,0 +1,31 @@
+<div class="login-container">
+  <div class="login-box">
+    <div class="logo-container">
+      <img [src]="logo" alt="Book Store" class="logo">
+    </div>
+    <h2 class="title">LOGIN</h2>
+    <form (submit)="onSubmit($event)">
+      <div class="input-group">
+        <label for="username">Username</label>
+        <input
+          id="username"
+          name="username"
+          [(ngModel)]="username"
+          required
+        />
+      </div>
+      <div class="input-group">
+        <label for="password">Password</label>
+        <input
+          id="password"
+          name="password"
+          type="password"
+          [(ngModel)]="password"
+          required
+        />
+      </div>
+      <button type="submit">Login</button>
+      <p class="error" *ngIf="message">{{ message }}</p>
+    </form>
+  </div>
+</div>

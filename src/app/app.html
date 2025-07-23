@@ -1,12 +1,14 @@
 
-<app-header (search)="onSearchQueryChanged($event)"></app-header>
-
- <div class="container">
-    <app-book-store class="carts" [searchQuery]="searchQueryFromHeader"></app-book-store> 
-</div>
-
 
 
 <div class="main-container">
-  <router-outlet></router-outlet>
+  <router-outlet>
+
+<!-- <app-header (search)="onSearchQueryChanged($event)"></app-header>
+
+  <div class="container">
+    <app-book-store class="carts" [searchQuery]="searchQueryFromHeader"></app-book-store> 
+  </div>
+ -->
+  </router-outlet>
 </div>

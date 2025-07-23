@@ -1,11 +1,14 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './login.component/login.component';
-import { App } from './app'; // أو DashboardComponent
-import { authGuard } from './services/auth.guard';
+import { DashboardComponent } from './dashboard.component/dashboard.component'; // المسار حسب مكانه
+import { AuthGuard } from './services/auth.guard'; // اختيارياً إذا أضفت حماية
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
-  { path: 'dashboard', component: App, canActivate: [authGuard] }, // 👈 محمي
-  { path: '**', redirectTo: 'login' },
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+    canActivate: [AuthGuard], // حماية المسار
+  },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
 ];
