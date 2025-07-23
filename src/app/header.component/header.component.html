@@ -1,0 +1,44 @@
+<header class="header">
+  <!-- Top bar (logo + search + cart) -->
+  <div class="top-bar">
+    <!-- Logo -->
+    <div class="logo-container">
+      <a routerLink="/">
+        <img [src]="logo" alt="Book Store" class="logo">
+      </a>
+    </div>
+
+    <!-- Search bar -->
+    <div class="search-bar">
+        <button (click)="onSearch()">
+          <span class="material-symbols-outlined">search</span> <!-- Requires Font Awesome -->
+        </button>
+      <input 
+        type="text" 
+        [(ngModel)]="searchQuery" 
+        (ngModelChange)="onSearch()" 
+        placeholder="Search books..." 
+        
+        
+      >
+      <!-- (keyup.enter)="onSearch()" -->
+    </div>
+
+    <!-- Shopping cart -->
+    <div class="cart">
+      <a routerLink="/cart" class="cart-link">
+       <span class="material-symbols-outlined">shopping_bag</span>
+        <span class="cart-count">{{ cartItemsCount }}</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Navigation menu -->
+  <nav class="nav-menu">
+    <ul>
+      <li *ngFor="let item of menuItems">
+        <a [routerLink]="item.link">{{ item.name }}</a>
+      </li>
+    </ul>
+  </nav>
+</header>
