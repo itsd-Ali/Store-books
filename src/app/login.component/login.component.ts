@@ -2,16 +2,16 @@
 
 import { Component } from '@angular/core';
 import { AuthService } from '../services/auth.service';
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 
 
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
     standalone: true,
-    imports: [BrowserModule, FormsModule],
+    imports: [CommonModule, FormsModule],
+
   selector: 'app-login',
   template: `
     <form (submit)="onSubmit($event)">
@@ -29,14 +29,19 @@ export class LoginComponent {
 
   constructor(private authService: AuthService, private router: Router) {}
 
-  onSubmit(event: Event) {
-    event.preventDefault(); // منع التحديث التلقائي للصفحة
-    this.authService.login(this.username, this.password).subscribe({
-      next: res => {
-        this.message = res;
-        this.router.navigate(['/dashboard']); // انتقل إلى الصفحة المحددة
-      },
-      error: err => this.message = 'Login failed: ' + err.error
-    });
-  }
+ onSubmit(event: Event) {
+  event.preventDefault();
+
+  this.authService.login(this.username, this.password).subscribe({
+    next: res => {
+      localStorage.setItem('token', 'logged-in'); // 👈 نحفظ حالة الدخول
+      this.message = res;
+      this.router.navigate(['/dashboard']);       // 👈 ننتقل إلى صفحة الكتب أو الرئيسية
+    },
+    error: err => {
+      this.message = 'Login failed: ' + err.error;
+    }
+  });
+}
+
 }

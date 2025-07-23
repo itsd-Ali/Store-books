@@ -7,11 +7,15 @@ import { HeaderComponent } from "./header.component/header.component";
 
 @Component({
   selector: 'app-root',
+  
   imports: [RouterOutlet, BookStoreComponent, FormsModule, HeaderComponent],
   templateUrl: './app.html',
-  styleUrl: './app.scss'
+  styleUrl: './app.scss',
+  standalone: true,
+  template: `<router-outlet></router-outlet>`
 })
 export class App {
+
 searchQueryFromHeader: string = '';
 
 onSearchChanged($event: string) {
