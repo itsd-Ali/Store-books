@@ -7,6 +7,11 @@ export interface Book {
   id?: number;
   title: string;
   author: string;
+  price: number;
+  imageUrl: string;
+  rating: number;
+  category: string;
+  summary: string;  
 }
 
 @Injectable({
