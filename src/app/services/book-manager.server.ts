@@ -39,4 +39,56 @@ export class BookManagerService {
     // ملاحظة: تحتاج في الـ Backend لتوفير endpoint خاص بالتعديل
     return this.http.put<Book>(`${this.apiUrl}/update/${book.id}`, book);
   }
+
+
+  getBooksByAuthor(author: string): Observable<Book[]> {
+    return this.http.get<Book[]>(`${this.apiUrl}/author/${author}`);
+  }
+  getBooksByPriceRange(min: number, max: number): Observable<Book[]> {
+    return this.http.get<Book[]>(`${this.apiUrl}/price?min=${min}&max=${max}`);
+  }
+  getBooksByRating(minRating: number): Observable<Book[]> {
+    return this.http.get<Book[]>(`${this.apiUrl}/rating?min=${minRating}`);
+  }
+  getBooksById(id: number): Observable<Book> {
+    return this.http.get<Book>(`${this.apiUrl}/get/${id}`);
+  }
+  getBooksByTitle(title: string): Observable<Book[]> {
+    return this.http.get<Book[]>(`${this.apiUrl}/title/${title}`);
+  }
+  getBooksByCategory(category: string): Observable<Book[]> {
+    return this.http.get<Book[]>(`${this.apiUrl}/category/${category}`);
+  }
+  getBooksByCategoryAndPrice(category: string, minPrice: number, maxPrice: number): Observable<Book[]> {
+    return this.http.get<Book[]>(`${this.apiUrl}/category/${category}/price?min=${minPrice}&max=${maxPrice}`);
+  }
+  getBooksByCategoryAndRating(category: string, minRating: number): Observable<Book[]> {
+    return this.http.get<Book[]>(`${this.apiUrl}/category/${category}/rating?min=${minRating}`);
+  }
+  getBooksByCategoryAndAuthor(category: string, author: string): Observable<Book[]> {
+    return this.http.get<Book[]>(`${this.apiUrl}/category/${category}/author/${author}`);
+  }
+  getBooksByCategoryAndPriceRange(category: string, minPrice: number, maxPrice: number): Observable<Book[]> {
+    return this.http.get<Book[]>(`${this.apiUrl}/category/${category}/price?min=${minPrice}&max=${maxPrice}`);
+  }
+  getBooksByCategoryAndRatingRange(category: string, minRating: number, maxRating: number): Observable<Book[]> {
+    return this.http.get<Book[]>(`${this.apiUrl}/category/${category}/rating?min=${minRating}&max=${maxRating}`);
+  }
+  getBooksByCategoryAndAuthorAndPrice(category: string, author: string, minPrice: number, maxPrice: number): Observable<Book[]> {
+    return this.http.get<Book[]>(`${this.apiUrl}/category/${category}/author/${author}/price?min=${minPrice}&max=${maxPrice}`);
+  }
+  getBooksByCategoryAndAuthorAndRating(category: string, author: string, minRating: number): Observable<Book[]> {
+    return this.http.get<Book[]>(`${this.apiUrl}/category/${category}/author/${author}/rating?min=${minRating}`);
+  }
+  getBooksByCategoryAndPriceAndRating(category: string, minPrice: number, maxPrice: number, minRating: number): Observable<Book[]> {
+    return this.http.get<Book[]>(`${this.apiUrl}/category/${category}/price?min=${minPrice}&max=${maxPrice}&rating=${minRating}`);
+  } 
+  getBookById(id: number): Observable<Book> {
+    return this.http.get<Book>(`${this.apiUrl}/get/${id}`);
+  }
+  searchBooks(query: string): Observable<Book[]> {
+    return this.http.get<Book[]>(`${this.apiUrl}/search?q=${query}`);
+  }
+
+
 }

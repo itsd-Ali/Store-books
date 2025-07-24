@@ -11,7 +11,7 @@ import { FormsModule } from '@angular/forms';
   imports: [CommonModule, FormsModule],
   selector: 'app-book-manager',
   templateUrl: './book-manager.component.html',
-  styleUrls: ['./book-manager.component.css']
+  styleUrls: ['./book-manager.component.scss']
 })
 export class BookManagerComponent implements OnInit {
   books: Book[] = [];
