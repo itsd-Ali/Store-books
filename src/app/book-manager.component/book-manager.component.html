@@ -1,40 +1,60 @@
-<div class="book-manager-container">
-  <h2>مكتبتي</h2>
+<div class="container">
+  <h2>Books Management</h2>
 
-  <table class="book-table">
+  <!-- Add new book -->
+  <div class="add-form">
+    <h3>Add New Book</h3>
+    <input [(ngModel)]="newBook.title" placeholder="Title" />
+    <input [(ngModel)]="newBook.author" placeholder="Author" />
+    <input type="number" [(ngModel)]="newBook.price" placeholder="Price" />
+    <input [(ngModel)]="newBook.imageUrl" placeholder="Image URL" />
+    <input type="number" [(ngModel)]="newBook.rating" placeholder="Rating (0-5)" min="0" max="5" />
+    <input [(ngModel)]="newBook.category" placeholder="Category" />
+    <textarea [(ngModel)]="newBook.summary" placeholder="Summary"></textarea>
+    <button (click)="addBook()">Add</button>
+  </div>
+
+  <!-- Books table -->
+  <table>
     <thead>
       <tr>
-        <th>العنوان</th>
-        <th>المؤلف</th>
-        <th>الإجراءات</th>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Price</th>
+        <th>Category</th>
+        <th>Rating</th>
+        <th>Summary</th>
+        <th>Image</th>
+        <th>Actions</th>
       </tr>
     </thead>
     <tbody>
-      <!-- إضافة كتاب جديد -->
-      <tr>
-        <td><input [(ngModel)]="newBook.title" placeholder="عنوان الكتاب" /></td>
-        <td><input [(ngModel)]="newBook.author" placeholder="اسم المؤلف" /></td>
-        <td><button (click)="addBook()">إضافة</button></td>
-      </tr>
-
-      <!-- عرض الكتب -->
       <tr *ngFor="let book of books">
         <ng-container *ngIf="editingBook?.id !== book.id; else editRow">
           <td>{{ book.title }}</td>
           <td>{{ book.author }}</td>
+          <td>{{ book.price }}</td>
+          <td>{{ book.category }}</td>
+          <td>{{ book.rating }}</td>
+          <td>{{ book.summary }}</td>
+          <td><img [src]="book.imageUrl" width="50" /></td>
           <td>
-            <button (click)="startEdit(book)">تعديل</button>
-            <button (click)="deleteBook(book.id!)">حذف</button>
+            <button (click)="editBook(book)">Edit</button>
+            <button (click)="deleteBook(book.id)">Delete</button>
           </td>
         </ng-container>
 
-        <!-- صف التعديل -->
         <ng-template #editRow>
-          <td><input [(ngModel)]="editingBook.title" /></td>
-          <td><input [(ngModel)]="editingBook.author" /></td>
+          <td><input [(ngModel)]="editingBook!.title" /></td>
+          <td><input [(ngModel)]="editingBook!.author" /></td>
+          <td><input type="number" [(ngModel)]="editingBook!.price" /></td>
+          <td><input [(ngModel)]="editingBook!.category" /></td>
+          <td><input type="number" [(ngModel)]="editingBook!.rating" min="0" max="5" /></td>
+          <td><textarea [(ngModel)]="editingBook!.summary"></textarea></td>
+          <td><input [(ngModel)]="editingBook!.imageUrl" /></td>
           <td>
-            <button (click)="saveEdit()">حفظ</button>
-            <button (click)="cancelEdit()">إلغاء</button>
+            <button (click)="saveEdit()">Save</button>
+            <button (click)="cancelEdit()">Cancel</button>
           </td>
         </ng-template>
       </tr>

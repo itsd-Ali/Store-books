@@ -8,7 +8,7 @@ import { HeaderComponent } from "./header.component/header.component";
 @Component({
   selector: 'app-root',
   
-  imports: [RouterOutlet, BookStoreComponent, FormsModule, HeaderComponent],
+  imports: [RouterOutlet, FormsModule],
   templateUrl: './app.html',
   styleUrl: './app.scss',
   standalone: true,

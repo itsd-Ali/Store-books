@@ -1,53 +1,115 @@
-.book-manager-container {
-  max-width: 800px;
-  margin: 40px auto;
-  text-align: center;
-  font-family: Arial, sans-serif;
+.container {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  direction: rtl;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+  h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #333;
+  }
 }
 
-h2 {
-  margin-bottom: 20px;
-  color: #333;
+.add-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+
+  input,
+  textarea {
+    flex: 1 1 200px;
+    padding: 0.6rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+  }
+
+  textarea {
+    min-height: 80px;
+  }
+
+  button {
+    padding: 0.7rem 1.5rem;
+    background-color: #2196f3;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  button:hover {
+    background-color: #1976d2;
+  }
 }
 
-.book-table {
+table {
   width: 100%;
   border-collapse: collapse;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
+  margin-top: 1rem;
 
-.book-table th,
-.book-table td {
-  padding: 12px 15px;
-  border: 1px solid #ddd;
-  text-align: left;
-}
+  th,
+  td {
+    text-align: center;
+    padding: 0.75rem;
+    border-bottom: 1px solid #eee;
+  }
 
-.book-table th {
-  background-color: #f4f4f4;
-  font-weight: bold;
-}
+  th {
+    background-color: #f5f5f5;
+    font-weight: 600;
+    color: #555;
+  }
 
-.book-table tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
+  td {
+    vertical-align: middle;
+  }
 
-input {
-  width: 95%;
-  padding: 5px;
-  box-sizing: border-box;
-}
+  img {
+    max-height: 50px;
+    border-radius: 6px;
+  }
 
-button {
-  margin: 0 4px;
-  padding: 5px 10px;
-  background-color: #1976d2;
-  border: none;
-  color: white;
-  border-radius: 4px;
-  cursor: pointer;
-}
+  input,
+  textarea {
+    width: 100%;
+    padding: 0.4rem;
+    font-size: 13px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+  }
 
-button:hover {
-  background-color: #0d47a1;
+  button {
+    margin: 0 2px;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+    transition: background-color 0.3s;
+  }
+
+  button:nth-child(1) {
+    background-color: #4caf50;
+    color: white;
+  }
+
+  button:nth-child(1):hover {
+    background-color: #388e3c;
+  }
+
+  button:nth-child(2) {
+    background-color: #f44336;
+    color: white;
+  }
+
+  button:nth-child(2):hover {
+    background-color: #d32f2f;
+  }
 }
