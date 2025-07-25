@@ -11,7 +11,7 @@
     <input type="number" [(ngModel)]="newBook.rating" placeholder="Rating (0-5)" min="0" max="5" />
     <input [(ngModel)]="newBook.category" placeholder="Category" />
     <textarea [(ngModel)]="newBook.summary" placeholder="Summary"></textarea>
-    <button (click)="addBook()">Add</button>
+    <button type="button" (click)="addBook()">Add</button>
   </div>
 
   <!-- Books table -->
@@ -39,8 +39,8 @@
           <td>{{ book.summary }}</td>
           <td><img [src]="book.imageUrl" width="50" /></td>
           <td>
-            <button (click)="editBook(book)">Edit</button>
-            <button (click)="deleteBook(book.id)">Delete</button>
+            <button type="button" (click)="editBook(book)">Edit</button>
+            <button type="button" (click)="deleteBook(book.id)">Delete</button>
           </td>
         </ng-container>
 
@@ -53,8 +53,9 @@
           <td><textarea [(ngModel)]="editingBook!.summary"></textarea></td>
           <td><input [(ngModel)]="editingBook!.imageUrl" /></td>
           <td>
-            <button (click)="saveEdit()">Save</button>
-            <button (click)="cancelEdit()">Cancel</button>
+            <button type="button" (click)="saveEdit()">Save</button>
+
+            <button type="button" (click)="cancelEdit()">Cancel</button>
           </td>
         </ng-template>
       </tr>

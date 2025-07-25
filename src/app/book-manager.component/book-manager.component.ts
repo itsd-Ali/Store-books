@@ -1,34 +1,35 @@
-
 import { Component, OnInit } from '@angular/core';
-import { BookManagerService } from './../services/book-manager.server';
-import {Book} from '../services/book.service';
+import { BookManagerService, Book } from '../services/book-manager.server';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-
 @Component({
-  standalone: true,
-  imports: [ CommonModule, FormsModule ],
+  imports: [CommonModule,FormsModule],
+  
   selector: 'app-book-manager',
   templateUrl: './book-manager.component.html',
   styleUrls: ['./book-manager.component.scss']
 })
 export class BookManagerComponent implements OnInit {
-  // تعريف متغيرات لتخزين الكتب
   books: Book[] = [];
-  // متغيرات لإضافة وتحرير الكتب
   newBook: Book = this.createEmptyBook();
   editingBook: Book | null = null;
 
   constructor(private bookService: BookManagerService) {}
 
-  ngOnInit() {
-    this.loadBooks();
+  ngOnInit(): void {
+    // تحميل الكتب من الـ BehaviorSubject
+    this.bookService.books$.subscribe((books: Book[]) => {
+      this.books = books;
+    });
+
+    // تحديث أولي للكتب
+    this.bookService.refreshBooks();
   }
 
   createEmptyBook(): Book {
     return {
-      id: 0,
+      id: undefined,
       title: '',
       author: '',
       price: 0,
@@ -39,61 +40,58 @@ export class BookManagerComponent implements OnInit {
     };
   }
 
-  loadBooks() {
-    this.bookService.getBooks().subscribe({
-      next: books => this.books = books,
-      error: err => console.error('Failed to load books', err)
-    });
-  }
-
-  addBook() {
+  addBook(): void {
     if (!this.newBook.title || !this.newBook.author) {
-      alert('يرجى إدخال العنوان والمؤلف');
+      alert('الرجاء إدخال عنوان ومؤلف الكتاب');
       return;
     }
+
     this.bookService.addBook(this.newBook).subscribe({
-      next: addedBook => {
-        this.books.push(addedBook);
-        this.newBook = this.createEmptyBook();
+      next: (addedBook: Book) => {
+        console.log('تمت إضافة الكتاب:', addedBook);
+        this.newBook = this.createEmptyBook(); // تفريغ النموذج
+        this.bookService.refreshBooks(); // تحديث القائمة
       },
-      error: err => console.error('Failed to add book', err)
+      error: (err: any) => {
+        console.error('فشل في إضافة الكتاب', err);
+      }
     });
   }
 
-  editBook(book: Book) {
-    this.editingBook = { ...book }; // clone to edit
+  editBook(book: Book): void {
+    this.editingBook = { ...book }; // نسخة قابلة للتعديل
   }
 
-  cancelEdit() {
+  cancelEdit(): void {
     this.editingBook = null;
   }
-  
-  saveEdit() {
+
+  saveEdit(): void {
     if (!this.editingBook) return;
-    if (!this.editingBook.title || !this.editingBook.author) {
-      alert('يرجى إدخال العنوان والمؤلف');
-      return;
-    }
+
     this.bookService.updateBook(this.editingBook).subscribe({
-      next: updatedBook => {
-        const idx = this.books.findIndex(b => b.id === updatedBook.id);
-        if (idx !== -1) this.books[idx] = updatedBook;
+      next: (updatedBook: Book) => {
+        console.log('تم تحديث الكتاب:', updatedBook);
         this.editingBook = null;
+        this.bookService.refreshBooks(); // تحديث القائمة
       },
-      error: err => console.error('Failed to update book', err)
+      error: (err: any) => {
+        console.error('فشل في تحديث الكتاب', err);
+      }
     });
   }
-  
 
-
-
-
-  deleteBook(id?: number) {
+  deleteBook(id: number | undefined): void {
     if (!id) return;
-    if (!confirm('هل أنت متأكد من حذف هذا الكتاب؟')) return;
+
     this.bookService.deleteBook(id).subscribe({
-      next: () => this.books = this.books.filter(b => b.id !== id),
-      error: err => console.error('Failed to delete book', err)
+      next: () => {
+        console.log('تم حذف الكتاب');
+        this.bookService.refreshBooks(); // تحديث القائمة
+      },
+      error: (err: any) => {
+        console.error('فشل في حذف الكتاب', err);
+      }
     });
   }
 }

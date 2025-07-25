@@ -1,97 +1,86 @@
-// src/app/services/book-manager.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 
 export interface Book {
-  id: number;
+  id?: number;
   title: string;
   author: string;
   price: number;
   imageUrl: string;
   rating: number;
   category: string;
-  summary: string;  
+  summary: string;
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class BookManagerService {
-  
   private apiUrl = 'http://localhost:8080/api/books';
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient) {}
+  
 
-  }
-  // الحصول على جميع الكتب 
-  getBooks(): Observable<Book[]> {
-    return this.http.get<Book[]>(`${this.apiUrl}/all`);
+  // BehaviorSubject to hold the list of books
+
+  private booksSubject = new BehaviorSubject<Book[]>([]);
+  public books$ = this.booksSubject.asObservable();
+
+  // تحميل جميع الكتب وتحديث BehaviorSubject
+  getAllBooks(): Observable<Book[]> {
+  return this.http.get<Book[]>(`${this.apiUrl}`).pipe(
+    tap(books => this.booksSubject.next(books))
+  );
+}
+
+
+updateBook(book: Book): Observable<Book> {
+  return this.http.put<Book>(`${this.apiUrl}/update/${book.id}`, book, {
+    responseType: 'json'
+  });
+}
+  refreshBooks() {
+    this.getAllBooks().subscribe();
   }
 
-  addBook(book: Book): Observable<Book> {
-    return this.http.post<Book>(`${this.apiUrl}/add`, book);
+  getBookById(id: number): Observable<Book> {
+    return this.http.get<Book>(`${this.apiUrl}/${id}`);
   }
+
+  addBook(book: Book): Observable<any> {
+  return this.http.post(`${this.apiUrl}/add`, book, { responseType: 'text' }).pipe(
+    tap(() => this.refreshBooks())
+  );
+}
+
+
+  /* updateBook(book: Book): Observable<Book> {
+    return this.http.put<Book>(`${this.apiUrl}/update/${book.id}`, book).pipe(
+      tap(() => this.refreshBooks())
+    );
+  } */
 
   deleteBook(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/delete/${id}`);
-  }
-
-  // التعديل: حاليًا يمكنك الحذف ثم الإضافة مجددًا بنفس البيانات لتحديث الكتاب
-  updateBook(book: Book): Observable<Book> {
-    // ملاحظة: تحتاج في الـ Backend لتوفير endpoint خاص بالتعديل
-    return this.http.put<Book>(`${this.apiUrl}/update/${book.id}`, book);
-  }
+  return this.http.delete(`${this.apiUrl}/delete/${id}`, { responseType: 'text' }).pipe(
+    tap(() => this.refreshBooks())
+  );
+}
 
 
-  getBooksByAuthor(author: string): Observable<Book[]> {
-    return this.http.get<Book[]>(`${this.apiUrl}/author/${author}`);
-  }
-  getBooksByPriceRange(min: number, max: number): Observable<Book[]> {
-    return this.http.get<Book[]>(`${this.apiUrl}/price?min=${min}&max=${max}`);
-  }
-  getBooksByRating(minRating: number): Observable<Book[]> {
-    return this.http.get<Book[]>(`${this.apiUrl}/rating?min=${minRating}`);
-  }
-  getBooksById(id: number): Observable<Book> {
-    return this.http.get<Book>(`${this.apiUrl}/get/${id}`);
-  }
-  getBooksByTitle(title: string): Observable<Book[]> {
-    return this.http.get<Book[]>(`${this.apiUrl}/title/${title}`);
-  }
-  getBooksByCategory(category: string): Observable<Book[]> {
-    return this.http.get<Book[]>(`${this.apiUrl}/category/${category}`);
-  }
-  getBooksByCategoryAndPrice(category: string, minPrice: number, maxPrice: number): Observable<Book[]> {
-    return this.http.get<Book[]>(`${this.apiUrl}/category/${category}/price?min=${minPrice}&max=${maxPrice}`);
-  }
-  getBooksByCategoryAndRating(category: string, minRating: number): Observable<Book[]> {
-    return this.http.get<Book[]>(`${this.apiUrl}/category/${category}/rating?min=${minRating}`);
-  }
-  getBooksByCategoryAndAuthor(category: string, author: string): Observable<Book[]> {
-    return this.http.get<Book[]>(`${this.apiUrl}/category/${category}/author/${author}`);
-  }
-  getBooksByCategoryAndPriceRange(category: string, minPrice: number, maxPrice: number): Observable<Book[]> {
-    return this.http.get<Book[]>(`${this.apiUrl}/category/${category}/price?min=${minPrice}&max=${maxPrice}`);
-  }
-  getBooksByCategoryAndRatingRange(category: string, minRating: number, maxRating: number): Observable<Book[]> {
-    return this.http.get<Book[]>(`${this.apiUrl}/category/${category}/rating?min=${minRating}&max=${maxRating}`);
-  }
-  getBooksByCategoryAndAuthorAndPrice(category: string, author: string, minPrice: number, maxPrice: number): Observable<Book[]> {
-    return this.http.get<Book[]>(`${this.apiUrl}/category/${category}/author/${author}/price?min=${minPrice}&max=${maxPrice}`);
-  }
-  getBooksByCategoryAndAuthorAndRating(category: string, author: string, minRating: number): Observable<Book[]> {
-    return this.http.get<Book[]>(`${this.apiUrl}/category/${category}/author/${author}/rating?min=${minRating}`);
-  }
-  getBooksByCategoryAndPriceAndRating(category: string, minPrice: number, maxPrice: number, minRating: number): Observable<Book[]> {
-    return this.http.get<Book[]>(`${this.apiUrl}/category/${category}/price?min=${minPrice}&max=${maxPrice}&rating=${minRating}`);
-  } 
-  getBookById(id: number): Observable<Book> {
-    return this.http.get<Book>(`${this.apiUrl}/get/${id}`);
-  }
   searchBooks(query: string): Observable<Book[]> {
-    return this.http.get<Book[]>(`${this.apiUrl}/search?q=${query}`);
+    return this.http.get<Book[]>(`${this.apiUrl}?q=${query}`);
   }
 
+  getBooksByCategory(category: string): Observable<Book[]> {
+    return this.http.get<Book[]>(`${this.apiUrl}?category=${category}`);
+  }
 
+  getBooksByPriceRange(min: number, max: number): Observable<Book[]> {
+    return this.http.get<Book[]>(`${this.apiUrl}?price_gte=${min}&price_lte=${max}`);
+  }
+
+  getBooksByRating(minRating: number): Observable<Book[]> {
+    return this.http.get<Book[]>(`${this.apiUrl}?rating_gte=${minRating}`);
+  }
 }

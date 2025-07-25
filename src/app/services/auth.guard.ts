@@ -10,3 +10,4 @@ export class AuthGuard implements CanActivate {
     return token === 'logged-in' ? true : this.router.parseUrl('/login');
   }
 }
+

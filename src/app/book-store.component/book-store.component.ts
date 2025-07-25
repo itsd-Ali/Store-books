@@ -2,13 +2,11 @@ import { FilterSidebarComponent } from './../filter-sidebar.component/filter-sid
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Book, BookService } from '../services/book.service';
-
+import { BookManagerService, Book } from '../services/book-manager.server';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, FormsModule,FilterSidebarComponent
-  ],
+  imports: [CommonModule, FormsModule, FilterSidebarComponent],
   selector: 'app-book-store',
   templateUrl: './book-store.component.html',
   styleUrls: ['./book-store.component.scss']
@@ -16,7 +14,7 @@ import { Book, BookService } from '../services/book.service';
 export class BookStoreComponent implements OnInit {
   books: Book[] = [];
   filteredBooks: Book[] = [];
-  
+
   currentFilters = {
     category: 'All',
     minPrice: 0,
@@ -25,20 +23,19 @@ export class BookStoreComponent implements OnInit {
     searchQuery: ''
   };
 
-  constructor(private bookService: BookService) {}
+  constructor(private bookService: BookManagerService) {}
 
   ngOnInit(): void {
-    this.bookService.getAllBooks().subscribe(data => {
+    this.bookService.books$.subscribe(data => {
       this.books = data;
       this.filteredBooks = this.applyAllFilters();
     });
+
+    this.bookService.refreshBooks(); // تحميل أولي
   }
 
   onFiltersChanged(filters: any) {
-    this.currentFilters.category = filters.category;
-    this.currentFilters.minPrice = filters.minPrice;
-    this.currentFilters.maxPrice = filters.maxPrice;
-    this.currentFilters.ratings = filters.ratings;
+    this.currentFilters = { ...this.currentFilters, ...filters };
     this.filteredBooks = this.applyAllFilters();
   }
 
@@ -49,23 +46,14 @@ export class BookStoreComponent implements OnInit {
 
   applyAllFilters(): Book[] {
     return this.books.filter(book => {
-      // Filter by category
-      const matchesCategory = this.currentFilters.category === 'All' || 
-                             book.category === this.currentFilters.category;
-      
-      // Filter by price range
-      const matchesPrice = book.price >= this.currentFilters.minPrice && 
-                          book.price <= this.currentFilters.maxPrice;
-      
-      // Filter by ratings
-      const matchesRating = this.currentFilters.ratings.length === 0 || 
-                           this.currentFilters.ratings.some(r => Math.floor(book.rating) === r);
-      
-      // Filter by search query
-      const matchesSearch = !this.currentFilters.searchQuery.trim() || 
-                           book.title.toLowerCase().includes(this.currentFilters.searchQuery.toLowerCase()) ||
-                           book.author.toLowerCase().includes(this.currentFilters.searchQuery.toLowerCase());
-      
+      const matchesCategory = this.currentFilters.category === 'All' || book.category === this.currentFilters.category;
+      const matchesPrice = book.price >= this.currentFilters.minPrice && book.price <= this.currentFilters.maxPrice;
+      const matchesRating = this.currentFilters.ratings.length === 0 ||
+        this.currentFilters.ratings.some(r => Math.floor(book.rating) === r);
+      const matchesSearch = !this.currentFilters.searchQuery.trim() ||
+        book.title.toLowerCase().includes(this.currentFilters.searchQuery.toLowerCase()) ||
+        book.author.toLowerCase().includes(this.currentFilters.searchQuery.toLowerCase());
+
       return matchesCategory && matchesPrice && matchesRating && matchesSearch;
     });
   }
