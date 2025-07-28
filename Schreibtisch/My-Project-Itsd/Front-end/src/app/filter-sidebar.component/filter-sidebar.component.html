@@ -1,0 +1,45 @@
+<div class="filter-sidebar">
+  <div class="filter-section">
+    <h3>Book classifications</h3>
+    <ul class="category-list">
+      <li *ngFor="let category of categories" 
+          [class.active]="selectedCategory === category"
+          (click)="selectCategory(category)">
+        {{category}}
+      </li>
+    </ul>
+  </div>
+
+  <div class="filter-section">
+    <h3>Price range</h3>
+    <div class="price-range">
+      <input type="range" min="0" max="200" [(ngModel)]="priceRange[0]" (change)="applyFilters()">
+      <input type="range" min="0" max="200" [(ngModel)]="priceRange[1]" (change)="applyFilters()">
+      <div class="price-values">
+        <span>{{priceRange[0] | currency:'€':'symbol':'1.0-0'}}</span>
+        <span>{{priceRange[1] | currency:'€':'symbol':'1.0-0'}}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="filter-section">
+    <h3>Evaluation</h3>
+    <div class="rating-filter">
+      <div *ngFor="let star of [5,4,3,2,1]" class="rating-option">
+        <input type="checkbox" 
+               [id]="'rating-'+star" 
+               [(ngModel)]="selectedRatings[star]" 
+               (change)="applyFilters()">
+        <label [for]="'rating-'+star">
+          <span *ngFor="let s of [1,2,3,4,5]">
+            <span *ngIf="s <= star">★</span>
+            <span *ngIf="s > star">☆</span>
+          </span>
+          <span *ngIf="star < 5">+</span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <button class="reset-filters" (click)="resetFilters()">Reset the filters</button>
+</div>

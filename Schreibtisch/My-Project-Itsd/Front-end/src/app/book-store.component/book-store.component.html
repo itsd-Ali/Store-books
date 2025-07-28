@@ -1,0 +1,29 @@
+
+
+<div class="book-store-container">
+  <div class="store-content">
+    <app-filter-sidebar (filtersChanged)="onFiltersChanged($event)"></app-filter-sidebar>
+    
+    <div class="books-container">
+      <div class="store-header">
+      <!--   <h1>Bookstore</h1> -->
+      </div>
+
+        <div class="books-grid">
+          <div class="book-card" *ngFor="let book of filteredBooks">
+            <div class="book-image-container">
+              <img [src]="book.imageUrl" [alt]="book.title" class="book-image">
+              <span class="book-rating">{{book.rating}} ★</span>
+            </div>
+            <div class="book-details">
+              <h3 class="book-title">{{book.title}}</h3>
+              <p class="book-author">By: {{book.author}}</p>
+              <p class="book-category">{{book.category}}</p>
+              <p class="book-price">{{book.price | currency:'€':'symbol':'1.2-2'}}</p>
+              <button class="add-to-cart" (click)="addToCart(book)">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>

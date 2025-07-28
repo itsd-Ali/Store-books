@@ -1,0 +1,69 @@
+<div class="container">
+  <h2>Books Management</h2>
+
+  <!-- Add new book -->
+  <div class="add-form">
+    <h3>Add New Book</h3>
+    <input [(ngModel)]="newBook.title" placeholder="Title" />
+    <input [(ngModel)]="newBook.author" placeholder="Author" />
+    <input [(ngModel)]="newBook.isbn" placeholder="ISBN" />
+    <input type="number" [(ngModel)]="newBook.price" placeholder="Price" />
+    <input [(ngModel)]="imageNumber" (ngModelChange)="updateImageUrl()" placeholder="Image number (e.g., 1, 2...)" />
+    <input type="number" [(ngModel)]="newBook.rating" placeholder="Rating (0-5)" min="0" max="5" />
+    <input [(ngModel)]="newBook.category" placeholder="Category" />
+    <textarea [(ngModel)]="newBook.summary" placeholder="Summary"></textarea>
+    <button type="button" (click)="addBook()">Add</button>
+  </div>
+
+  <!-- Books table -->
+  <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>ISBN</th>
+        <th>Price</th>
+        <th>Category</th>
+        <th>Rating</th>
+        <th>Summary</th>
+        <th>Image</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let book of books">
+        <ng-container *ngIf="editingBook?.id !== book.id; else editRow">
+          <td>{{ book.title }}</td>
+          <td>{{ book.author }}</td>
+          <td>{{ book.isbn }}</td>
+          <td>{{ book.price }}</td>
+          <td>{{ book.category }}</td>
+          <td>{{ book.rating }}</td>
+          <td>{{ book.summary }}</td>
+          <td><img [src]="book.imageUrl" width="50" /></td>
+          <td>
+            <button type="button" (click)="editBook(book)">Edit</button>
+            <button type="button" (click)="deleteBook(book.id)">Delete</button>
+          </td>
+        </ng-container>
+
+        <ng-template #editRow>
+          <td><input [(ngModel)]="editingBook!.title" /></td>
+          <td><input [(ngModel)]="editingBook!.author" /></td>
+          <td><input [(ngModel)]="editingBook!.isbn" /></td>
+
+          <td><input type="number" [(ngModel)]="editingBook!.price" /></td>
+          <td><input [(ngModel)]="editingBook!.category" /></td>
+          <td><input type="number" [(ngModel)]="editingBook!.rating" min="0" max="5" /></td>
+          <td><textarea [(ngModel)]="editingBook!.summary"></textarea></td>
+          <td><input [(ngModel)]="editingBook!.imageUrl" /></td>
+          <td>
+            <button type="button" (click)="saveEdit()">Save</button>
+
+            <button type="button" (click)="cancelEdit()">Cancel</button>
+          </td>
+        </ng-template>
+      </tr>
+    </tbody>
+  </table>
+</div>
