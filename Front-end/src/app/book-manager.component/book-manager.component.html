@@ -1,0 +1,68 @@
+<div class="container">
+  <h2>Book Manager</h2>
+
+  <!-- Add Book Form -->
+  <div class="add-form">
+    <h3>Add New Book</h3>
+    <form (ngSubmit)="addBook()">
+      <input type="text" [(ngModel)]="newBook.title" name="title" placeholder="Title" required />
+      <input type="text" [(ngModel)]="newBook.author" name="author" placeholder="Author" required />
+      <input type="number" [(ngModel)]="newBook.price" name="price" placeholder="Price" required />
+      <input type="text" [(ngModel)]="newBook.category" name="category" placeholder="Category" required />
+      <input type="text" [(ngModel)]="newBook.summary" name="summary" placeholder="Summary" required />
+      <input type="text" [(ngModel)]="newBook.isbn" name="isbn" placeholder="ISBN" required />
+
+      <!-- Auto-generate imageUrl from number -->
+      <input type="text" [(ngModel)]="imageNumber" name="imageNumber" placeholder="Image Number" (input)="updateImageUrl()" />
+      <button type="submit">Add Book</button>
+    </form>
+  </div>
+
+ <table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Author</th>
+      <th>Price</th>
+      <th>Category</th>
+      <th>Summary</th>
+      <th>ISBN</th>
+      <th>Image</th>
+      <th>Rating</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- Edit Mode Row -->
+    <tr *ngIf="editingBook as book">
+      <td><input [(ngModel)]="book.title" name="title" /></td>
+      <td><input [(ngModel)]="book.author" name="author" /></td>
+      <td><input type="number" [(ngModel)]="book.price" name="price" /></td>
+      <td><input [(ngModel)]="book.category" name="category" /></td>
+      <td><input [(ngModel)]="book.summary" name="summary" /></td>
+      <td><input [(ngModel)]="book.isbn" name="isbn" /></td>
+      <td><input [(ngModel)]="book.imageUrl" name="imageUrl" /></td>
+      <td><input type="number" [(ngModel)]="book.rating" name="rating" /></td>
+      <td class="actions">
+        <button type="button" (click)="saveEdit()">Save</button>
+        <button type="button" (click)="cancelEdit()">Cancel</button>
+      </td>
+    </tr>
+
+    <!-- Normal Display Rows -->
+    <tr *ngFor="let book of books">
+      <td>{{ book.title }}</td>
+      <td>{{ book.author }}</td>
+      <td>{{ book.price }}</td>
+      <td>{{ book.category }}</td>
+      <td>{{ book.summary }}</td>
+      <td>{{ book.isbn }}</td>
+      <td><img [src]="book.imageUrl" alt="cover" width="50" /></td>
+      <td>{{ book.rating }}</td>
+      <td class="actions">
+        <button type="button" (click)="editBook(book)">Edit</button>
+        <button type="button" (click)="deleteBook(book.id)">Delete</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
