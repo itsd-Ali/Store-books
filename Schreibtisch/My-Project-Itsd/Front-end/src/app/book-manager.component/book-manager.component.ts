@@ -1,3 +1,4 @@
+import { colorNames } from './../../../node_modules/ansi-styles/index.d';
 import { Component, OnInit } from '@angular/core';
 import { BookManagerService, Book } from '../services/book-manager.server';
 import { CommonModule } from '@angular/common';
@@ -58,6 +59,7 @@ export class BookManagerComponent implements OnInit {
       error: (err: any) => {
         console.error('فشل في إضافة الكتاب', err);
       }
+      this.editingBook = null;
     });
   }
 
@@ -72,18 +74,18 @@ export class BookManagerComponent implements OnInit {
   if (!this.editingBook) return;
 
   // تأخير بسيط يسمح لـ ngModel بإكمال التحديث
-  setTimeout(() => {
+ 
     this.bookService.updateBook(this.editingBook!).subscribe({
       next: (updatedBook: Book) => {
         console.log('تم تحديث الكتاب:', updatedBook);
-        this.editingBook = null;
+        
         this.bookService.refreshBooks(); // تحديث القائمة
       },
       error: (err: any) => {
         console.error('فشل في تحديث الكتاب', err);
       }
     });
-  }, 0);
+  this.editingBook = null; // إلغاء وضع التحرير
 }
 
 
