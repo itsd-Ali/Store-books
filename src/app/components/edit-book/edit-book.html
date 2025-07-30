@@ -1,0 +1,19 @@
+<div class="modal-overlay" *ngIf="book">
+  <div class="modal-content">
+    <h3>تعديل الكتاب</h3>
+
+    <form (ngSubmit)="onSave()" #editForm="ngForm">
+      <input [(ngModel)]="book.title" name="title" placeholder="العنوان" required />
+      <input [(ngModel)]="book.author" name="author" placeholder="المؤلف" required />
+      <input [(ngModel)]="book.price" name="price" type="number" placeholder="السعر" required />
+      <input [(ngModel)]="book.category" name="category" placeholder="الفئة" required />
+      <input [(ngModel)]="book.isbn" name="isbn" placeholder="ISBN" required />
+      <textarea [(ngModel)]="book.summary" name="summary" placeholder="نبذة" required></textarea>
+
+      <div class="modal-buttons">
+        <button type="submit">حفظ</button>
+        <button type="button" (click)="onCancel()">إلغاء</button>
+      </div>
+    </form>
+  </div>
+</div>

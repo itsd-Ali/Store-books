@@ -1,8 +1,8 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './login.component/login.component';
-import { DashboardComponent } from './dashboard.component/dashboard.component'; // المسار حسب مكانه
-import { AuthGuard } from './services/auth.guard'; // اختيارياً إذا أضفت حماية
-import { BookManagerComponent } from './book-manager.component/book-manager.component';
+import { LoginComponent } from './components/login.component/login.component';
+import { DashboardComponent } from './components/dashboard.component/dashboard.component'; // المسار حسب مكانه
+import { AuthGuard } from './components/auth.guard'; // اختيارياً إذا أضفت حماية
+import { BookManagerComponent } from './components/book-manager.component/book-manager.component';
 
 export const routes: Routes = [
    { path: 'books', component: BookManagerComponent },

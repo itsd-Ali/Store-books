@@ -1,0 +1,61 @@
+<div class="book-manager">
+  <h2>إدارة الكتب</h2>
+
+  <input
+    type="text"
+    placeholder="ابحث عن كتاب"
+    [(ngModel)]="searchQuery"
+    (input)="filterBooks()"
+    class="search-input"
+  />
+
+  <!-- نموذج إضافة كتاب جديد -->
+  <div class="add-book-form">
+    <h3>إضافة كتاب جديد</h3>
+    <input [(ngModel)]="newBook.title" name="title" placeholder="العنوان" />
+    <input [(ngModel)]="newBook.author" name="author" placeholder="المؤلف" />
+    <input [(ngModel)]="newBook.price" name="price" type="number" placeholder="السعر" />
+    <input [(ngModel)]="newBook.category" name="category" placeholder="الفئة" />
+    <input [(ngModel)]="newBook.isbn" name="isbn" placeholder="ISBN" />
+    <textarea [(ngModel)]="newBook.summary" name="summary" placeholder="نبذة مختصرة"></textarea>
+    <input
+      [(ngModel)]="imageNumber"
+      name="imageNumber"
+      placeholder="رقم الصورة"
+      (input)="updateImageUrl()"
+    />
+    <img [src]="newBook.imageUrl" alt="صورة الكتاب" width="100" height="130" />
+    <button (click)="addBook()">إضافة</button>
+  </div>
+
+  <!-- قائمة الكتب -->
+  <div class="book-list" *ngIf="!loading && books.length > 0">
+    <div class="book-card" *ngFor="let book of books">
+      <img [src]="book.imageUrl" alt="صورة الكتاب" width="80" height="100" />
+      <div class="book-details">
+        <h4>{{ book.title }}</h4>
+        <p>المؤلف: {{ book.author }}</p>
+        <p>السعر: {{ book.price }} د.ع</p>
+        <p>التقييم: {{ book.rating }} / 5</p>
+        <button (click)="editBook(book)">تعديل</button>
+        <button (click)="deleteBook(book.id)">حذف</button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && books.length === 0">
+    <p>لا توجد كتب مطابقة.</p>
+  </div>
+
+  <div *ngIf="loading">
+    <p>جاري التحميل...</p>
+  </div>
+
+  <!-- ✅ نافذة التعديل (المودال) -->
+  <app-edit-book
+    *ngIf="editingBook"
+    [book]="editingBook"
+    (save)="saveEdit()"
+    (cancel)="cancelEdit()"
+  ></app-edit-book>
+</div>

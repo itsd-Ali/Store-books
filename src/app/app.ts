@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { BookStoreComponent } from './book-store.component/book-store.component';
+import { BookStoreComponent } from './components/book-store.component/book-store.component';
 import { FormsModule } from '@angular/forms';
-import { HeaderComponent } from "./header.component/header.component";
+import { HeaderComponent } from "./components/header.component/header.component";
 
 
 @Component({

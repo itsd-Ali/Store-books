@@ -1,12 +1,13 @@
 // login.component.ts
 
 import { Component } from '@angular/core';
-import { AuthService } from '../services/auth.service';
+
 import { FormsModule } from '@angular/forms';
 
 
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../auth.service';
 
 @Component({
     standalone: true,

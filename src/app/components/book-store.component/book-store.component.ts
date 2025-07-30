@@ -1,8 +1,8 @@
-import { FilterSidebarComponent } from './../filter-sidebar.component/filter-sidebar.component';
+import { FilterSidebarComponent } from '../filter-sidebar.component/filter-sidebar.component';
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { BookManagerService, Book } from '../services/book-manager.server';
+import { BookManagerService, Book } from '../../services/book-manager.server';
 
 @Component({
   standalone: true,
