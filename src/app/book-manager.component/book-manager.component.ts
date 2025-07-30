@@ -4,6 +4,8 @@ import { catchError, finalize } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
+
 
 @Component({
   imports: [CommonModule, FormsModule],
@@ -23,7 +25,9 @@ export class BookManagerComponent implements OnInit {
   loading = false;
   error: string | null = null;
 
-  constructor(private bookService: BookManagerService) {}
+  constructor(private bookService: BookManagerService
+              , private toastr: ToastrService
+  ) {}
 
  ngOnInit(): void {
     this.loadBooks();
@@ -71,12 +75,14 @@ export class BookManagerComponent implements OnInit {
 
   addBook(): void {
     if (this.validateBook(this.newBook)) {
+      this.toastr.warning('يرجى ملء كل الحقول');
       this.bookService.addBook(this.newBook).subscribe({
         next: () => {
+          this.toastr.success('تمت إضافة الكتاب بنجاح');
           this.newBook = this.createEmptyBook();
           this.imageNumber = '';
         },
-        error: () => alert('خطأ أثناء إضافة الكتاب')
+        error: () =>    this.toastr.error('حدث خطأ أثناء إضافة الكتاب')
       });
     }
   }
@@ -86,24 +92,33 @@ export class BookManagerComponent implements OnInit {
   }
 
   saveEdit(): void {
-    if (this.editingBook && this.validateBook(this.editingBook)) {
-      this.bookService.updateBook(this.editingBook).subscribe({
-        next: () => this.editingBook = null,
-        error: () => alert('خطأ أثناء تعديل الكتاب')
-      });
-    }
+  if (this.editingBook && this.validateBook(this.editingBook)) {
+    this.bookService.updateBook(this.editingBook).subscribe({
+      next: () => {
+        this.toastr.success('تم تعديل الكتاب بنجاح');
+        this.editingBook = null;
+      },
+      error: () => {
+        this.toastr.error('حدث خطأ أثناء تعديل الكتاب');
+      }
+    });
+  } else {
+    this.toastr.warning('يرجى التأكد من إدخال جميع الحقول');
   }
+}
+
 
   cancelEdit(): void {
     this.editingBook = null;
   }
 
   deleteBook(id?: number): void {
-    if (id && confirm('هل أنت متأكد من حذف هذا الكتاب؟')) {
-      this.bookService.deleteBook(id).subscribe({
-        error: () => alert('خطأ أثناء حذف الكتاب')
-      });
-    }
+  if (id && confirm('هل أنت متأكد من حذف هذا الكتاب؟')) {
+    this.bookService.deleteBook(id).subscribe({
+      next: () => this.toastr.info('تم حذف الكتاب'),
+      error: () => this.toastr.error('حدث خطأ أثناء حذف الكتاب')
+    });
+  }
   }
 
   updateImageUrl(): void {
