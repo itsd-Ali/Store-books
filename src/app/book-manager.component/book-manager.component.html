@@ -13,9 +13,8 @@
       <input type="text" placeholder="الرقم الدولي (ISBN)" [(ngModel)]="newBook.isbn" name="isbn" required />
       
       <div class="image-input">
-        <input type="file" (change)="onImageSelected($event, 'add')" />
-        <img *ngIf="newBook.imageUrl" [src]="newBook.imageUrl" class="preview" />
-
+        <input type="text" placeholder="رقم الصورة (مثال: 1)" [(ngModel)]="imageNumber" name="imageNumber" (input)="updateImageUrl()" />
+        <img [src]="newBook.imageUrl" alt="صورة معاينة" class="preview" />
       </div>
 
       <button type="submit">إضافة</button>
@@ -85,9 +84,7 @@
       <input type="text" [(ngModel)]="editingBook.category" name="editCategory" placeholder="التصنيف" required />
       <textarea [(ngModel)]="editingBook.summary" name="editSummary" placeholder="النبذة" required></textarea>
       <input type="text" [(ngModel)]="editingBook.isbn" name="editIsbn" placeholder="ISBN" required />
-      <input type="file" (change)="onImageSelected($event, 'edit')" />
-      <img *ngIf="editingBook?.imageUrl" [src]="editingBook.imageUrl" class="preview" />
-
+      <input type="text" [(ngModel)]="editingBook.imageUrl" name="editImage" placeholder="رابط الصورة" />
 
       <div class="modal-buttons">
         <button type="submit">حفظ</button>

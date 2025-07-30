@@ -42,22 +42,6 @@ export class BookManagerComponent implements OnInit {
     );
   }
 
-  onImageSelected(event: Event, mode: 'add' | 'edit'): void {
-  const file = (event.target as HTMLInputElement).files?.[0];
-  if (!file) return;
-
-  const reader = new FileReader();
-  reader.onload = () => {
-    const imageUrl = reader.result as string;
-    if (mode === 'add') {
-      this.newBook.imageUrl = imageUrl;
-    } else if (mode === 'edit' && this.editingBook) {
-      this.editingBook.imageUrl = imageUrl;
-    }
-  };
-  reader.readAsDataURL(file);
-  }
-
 
   loadBooks(): void {
     this.loading = true;
