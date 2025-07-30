@@ -34,6 +34,7 @@ export class BookManagerComponent implements OnInit {
     this.filterBooks(); // تصفية أولية عند تحميل البيانات
     });
   }
+  // هذا الدالة ستُستدعى عند تغيير قيمة البحث
     filterBooks(): void {
     const query = this.searchQuery.toLowerCase();
     this.books = this.allBooks.filter(book =>
