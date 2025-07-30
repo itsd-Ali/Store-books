@@ -41,7 +41,7 @@ export class BookManagerComponent implements OnInit {
       book.author.toLowerCase().includes(query)
     );
   }
-
+  // هذا الدالة ستُستدعى عند تغيير قيمة البحث
   onImageSelected(event: Event, mode: 'add' | 'edit'): void {
   const file = (event.target as HTMLInputElement).files?.[0];
   if (!file) return;
