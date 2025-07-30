@@ -25,14 +25,17 @@ export class BookStoreComponent implements OnInit {
 
   constructor(private bookService: BookManagerService) {}
 
-  ngOnInit(): void {
-    this.bookService.books$.subscribe(data => {
-      this.books = data;
-      this.filteredBooks = this.applyAllFilters();
+ ngOnInit(): void {
+  this.bookService.books$.subscribe(data => {
+    this.books = data;
+     this.currentFilters = { ...this.currentFilters };
+     this.filteredBooks = this.applyAllFilters();
     });
+    
+    this.bookService.refreshBooks(); 
+  
+}
 
-   /*  this.bookService.refreshBooks(); // تحميل أولي */
-  }
 
   onFiltersChanged(filters: any) {
     this.currentFilters = { ...this.currentFilters, ...filters };
