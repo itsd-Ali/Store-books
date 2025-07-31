@@ -27,12 +27,16 @@ export class BookStoreComponent implements OnInit {
 
  ngOnInit(): void {
   this.bookService.books$.subscribe(data => {
+    console.log('Books loaded:', data);
     this.books = data;
      this.currentFilters = { ...this.currentFilters };
      this.filteredBooks = this.applyAllFilters();
     });
     
-    this.bookService.refreshBooks(); 
+      // تأخير صغير بعد الاشتراك
+  setTimeout(() => {
+    this.bookService.refreshBooks();
+  }, 10);
   
 }
 
