@@ -9,24 +9,8 @@
     class="search-input"
   />
 
-  <!-- نموذج إضافة كتاب جديد -->
-  <div class="add-book-form">
-    <h3>إضافة كتاب جديد</h3>
-    <input [(ngModel)]="newBook.title" name="title" placeholder="العنوان" />
-    <input [(ngModel)]="newBook.author" name="author" placeholder="المؤلف" />
-    <input [(ngModel)]="newBook.price" name="price" type="number" placeholder="السعر" />
-    <input [(ngModel)]="newBook.category" name="category" placeholder="الفئة" />
-    <input [(ngModel)]="newBook.isbn" name="isbn" placeholder="ISBN" />
-    <textarea [(ngModel)]="newBook.summary" name="summary" placeholder="نبذة مختصرة"></textarea>
-    <input
-      [(ngModel)]="imageNumber"
-      name="imageNumber"
-      placeholder="رقم الصورة"
-      (input)="updateImageUrl()"
-    />
-    <img [src]="newBook.imageUrl" alt="صورة الكتاب" width="100" height="130" />
-    <button (click)="addBook()">إضافة</button>
-  </div>
+  <!-- زر فتح نافذة إضافة كتاب -->
+  <button class="add-button" (click)="openAddModal()">إضافة كتاب جديد</button>
 
   <!-- قائمة الكتب -->
   <div class="book-list" *ngIf="!loading && books.length > 0">
@@ -51,7 +35,17 @@
     <p>جاري التحميل...</p>
   </div>
 
-  <!-- ✅ نافذة التعديل (المودال) -->
+  <!-- نافذة إضافة كتاب -->
+  <app-add-book
+    *ngIf="showAddModal"
+    [book]="newBook"
+    [imageNumber]="imageNumber"
+    (save)="addBook()"
+    (cancel)="closeAddModal()"
+    (updateImage)="updateImageUrl($event)"
+  ></app-add-book>
+
+  <!-- نافذة تعديل كتاب -->
   <app-edit-book
     *ngIf="editingBook"
     [book]="editingBook"
